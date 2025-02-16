@@ -68,6 +68,18 @@ class Board:
             if count_consecutive(dx, dy) + count_consecutive(-dx, -dy) - 1 >= self._n:
                 return True
         return False
+    
+    def print_grid(self):
+        for row in self._grid:
+            print(" | ".join(self._get_symbol(piece) for piece in row))
+            print("-" * (self._cols * 4 - 1))  # Print horizontal separator
+
+    def _get_symbol(self, piece: Piece) -> str:
+        if piece == Piece.YELLOW:
+            return "Y"
+        elif piece == Piece.RED:
+            return "R"
+        return " "  # Empty space
 
     
 
@@ -86,6 +98,7 @@ class Game:
         self.curr_player = player1
 
     def play_move(self) -> bool:
+        self._grid.print_grid()
         while True:
             col = int(input(f"{self.curr_player.name}'s turn: Enter column number to place a piece: "))
             row = self._grid.place_piece(col, self.curr_player.piece)   #place the piece in specified column
