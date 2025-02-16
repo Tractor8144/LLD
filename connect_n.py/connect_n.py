@@ -91,11 +91,17 @@ class Player:
 
 class Game:
     def __init__(self, rows : int, cols : int, target_score : int, player1 : Player, player2 : Player, n : int) :
-        self._grid = Board(rows, cols, n)
+        self._grid = self.init_board(rows, cols, n)
         self._target_score = target_score 
         self._player1 = player1
         self._player2 = player2
         self.curr_player = player1
+        self._n = n
+        self._rows = rows
+        self._cols = cols
+
+    def init_board(self, rows : int, cols : int, n : int) -> Board:
+        return Board(rows, cols, n)
 
     def play_move(self) -> bool:
         self._grid.print_grid()
@@ -142,12 +148,11 @@ class Game:
         while self._player1.score < self._target_score and self._player2.score < self._target_score:
             winner = self._play_round()
             if winner is not None:
-                print(f"{winner.name} won the round !!!")
                 print(f"Status of scores : {self._player1.name} : {self._player1.score} and {self._player2.name} : {self._player2.score}")
                 self.curr_player = self._player1
             else:
                 print(f"The round ended in draw!")
-
+            self._grid = self.init_board(self._rows, self._cols, self._n)
             if self._player1.score == self._target_score:
                 return self._player1
             elif self._player2.score == self._target_score:
